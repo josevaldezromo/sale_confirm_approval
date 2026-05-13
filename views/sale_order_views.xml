@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_sale_approval" model="ir.ui.view">
+        <field name="name">res.users.form.sale.approval</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='preferences']" position="after">
+                <page string="Ventas / Autorización" name="sale_approval_tab">
+                    <group>
+                        <field name="sale_requires_approval"/>
+                        <field name="sale_can_approve"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_form_confirm_approval" model="ir.ui.view">
+        <field name="name">sale.order.form.confirm.approval</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_confirm']" position="before">
+                <button name="action_request_approval" string="Solicitar Autorización" type="object" 
+                        class="btn-primary" 
+                        invisible="approval_state != 'not_required' or state not in ('draft', 'sent')"/>
+                
+                <button name="action_approve_quotation" string="Aprobar" type="object" 
+                        class="btn-success" 
+                        groups="sale_confirm_approval.group_sale_approver"
+                        invisible="approval_state != 'pending'"/>
+                
+                <button name="action_reject_quotation" string="Rechazar" type="object" 
+                        class="btn-danger" 
+                        groups="sale_confirm_approval.group_sale_approver"
+                        invisible="approval_state != 'pending'"/>
+                
+                <button name="action_request_approval" string="Re-Intentar Autorización" type="object" 
+                        class="btn-warning" 
+                        invisible="approval_state != 'rejected'"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="invisible">state not in ('draft', 'sent') or (approval_state != 'approved' and approval_state != 'not_required')</attribute>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <field name="approval_state" widget="statusbar" 
+                       statusbar_visible="pending,approved,rejected"
+                       invisible="approval_state == 'not_required'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="approved_by" invisible="approval_state != 'approved'"/>
+                <field name="approval_date" invisible="approval_state != 'approved'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

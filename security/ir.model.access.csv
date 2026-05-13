@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_users_sale_approval,res.users.sale.approval,base.model_res_users,,1,1,1,1
+access_sale_order_approval,sale.order.approval,sale.model_sale_order,,1,1,1,1
