@@ -10,8 +10,8 @@ This module adds a two-step confirmation process for sales orders:
 - Users with sale_requires_approval=True need approval to confirm orders
 - Users with sale_can_approve=True can approve pending orders
     """,
-    'author': 'SPC Consulting Group',
-    'website': 'https://spc-consulting.group',
+    'author': 'RaymundoValdez',
+    'website': 'https://saturnonexus.com',
     'license': 'LGPL-3',
     'depends': [
         'sale_management',
